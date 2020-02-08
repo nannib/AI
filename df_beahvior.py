@@ -21,9 +21,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.6, random_
 #model= Perceptron(max_iter=30, tol=0.01, eta0=0.5, random_state=0)
 model = KNeighborsClassifier(n_neighbors=5)
 model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-acc=accuracy_score(y_test, y_pred)
-valori=[4,77,120]
+pred_train = model.predict(X_train)
+pred_test = model.predict(X_test)
+acctest=accuracy_score(y_test,pred_test)
+acctrain=accuracy_score(y_train,pred_train)
+valori=[3,67,85]
 prediction = model.predict([valori])
-print("Accuracy:",round(acc*100,2),"%")
+print("Accuracy Train:",round(acctrain*100,2),"% Accuracy Test: ",round(acctest*100,2),"%")
 print("Predicted target name: {}".format(prediction)," \n",names," \n",valori,"   ",prediction)
