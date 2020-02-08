@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.svm import SVC
 #from sklearn.neighbors import KNeighborsClassifier
 
+
 # Load dataset
 url = "cell2.csv"
 names = ["power","gpsN","gpsE","cellname"]
@@ -18,12 +19,14 @@ X = array[:,0:3]
 y = array[:,3]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 model = SVC(gamma='auto')
-#model = KNeighborsClassifier(n_neighbors=3)
+#model = KNeighborsClassifier(n_neighbors=5)
 #model = Perceptron(max_iter=60, tol=0.001, eta0=0.3, random_state=0)
 model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-acc=accuracy_score(y_test, y_pred)
-valori=[74,52.524621,13.432073]
+pred_train = model.predict(X_train)
+pred_test = model.predict(X_test)
+acc=accuracy_score(y_test,pred_test)
+acctrain=accuracy_score(y_train,pred_train)
+valori=[10, 51.41215, 12.37008]
 prediction = model.predict([valori])
-print("Accuracy:",round(acc*100,2),"%")
-print("Predicted target name: {}".format(prediction)," \n",names," \n",valori,"   ",prediction)
+print("Accuracy Train:",round(acc*100,2),"% Accuracy Test: ",round(acctrain*100,2),"%")
+print("Predicted target name: {}".format(prediction)," \n",names," \n","        ",valori,"   ",prediction)
