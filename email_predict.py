@@ -2,7 +2,7 @@
 """
 Created on Mon Feb 10 12:16:42 2020
 
-@author: nannib
+@author: Nanni Bassetti - nannibassetti.com
 """
 
 # -*- coding: utf-8 -*-
