@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""
+
+@author: Nanni Bassetti - nannibassetti.com 
+"""
 from sklearn.model_selection import train_test_split
 #from sklearn.linear_model import Perceptron
 from sklearn.metrics import accuracy_score
