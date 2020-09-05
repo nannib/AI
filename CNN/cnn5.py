@@ -4,7 +4,7 @@ Created on Wed Sep  2 19:56:39 2020
 
 @author: nannib
 from https://sanjayasubedi.com.np/deeplearning/cnn-cat-vs-dog/
-require tensorflow 2.2.0 and gast 0.3.3
+require tensorflow 2.2.0 and gast 0.3.3 and tqdm 4.48.2
 """
 import matplotlib.pyplot as plt
 #import keras
@@ -23,6 +23,9 @@ LB1="dog"
 LB2="cat"
 # fill the directory ./images/train with LB1.jpg and LB2.jpg files
 
+onlyfiles_test = next(os.walk("images/"))[2] #images/ is your directory for testing images
+oft = len(onlyfiles_test)
+print (oft)
 
 def read_test_img(directory, resize_to=(128, 128)):
     """
@@ -33,16 +36,19 @@ def read_test_img(directory, resize_to=(128, 128)):
     """
     files = glob.glob(directory + "*.jpg")
     images = []
+    labels = []
     for f in tqdm.tqdm_notebook(files):
         im = Image.open(f)
         im = im.resize(resize_to)
         im = np.array(im) / 255.0
         im = im.astype("float32")
         images.append(im)
+        label = f
+        labels.append(label)
              
-    return np.array(images)
-# put x.jpg in ./images directory, x.jpg is your testing image 
-Xt = read_test_img(directory="images/", resize_to=(IM_WIDTH, IM_HEIGHT))
+    return np.array(images), np.array(labels)
+# put your testing images in ./images directory 
+Xt,yt = read_test_img(directory="images/", resize_to=(IM_WIDTH, IM_HEIGHT))
 
 def read_images(directory, resize_to=(128, 128)):
     """
@@ -54,7 +60,7 @@ def read_images(directory, resize_to=(128, 128)):
     files = glob.glob(directory + "*.jpg")
     images = []
     labels = []
-    for f in tqdm.tqdm_notebook(files):
+    for f in tqdm.notebook.tqdm(files):
         im = Image.open(f)
         im = im.resize(resize_to)
         im = np.array(im) / 255.0
@@ -70,7 +76,7 @@ X, y = read_images(directory=IMG_DIR, resize_to=(IM_WIDTH, IM_HEIGHT))
 
 onlyfiles = next(os.walk(IMG_DIR))[2] #img_dir is your directory path as string
 of = len(onlyfiles)
-print (len(onlyfiles))
+print (of)
 
 # make sure we have OF images if we are reading the full data set.
 # Change the number accordingly if you have created a subset
@@ -107,7 +113,7 @@ def humanize_labels(labels):
     return np.where(labels == 1, LB1, LB2)
  
 plot_images(X_train[:of], humanize_labels(y_train[:of]))
-plot_images(Xt, "X")
+plot_images(Xt[:oft], yt[:oft])
 
 from keras.layers import Input, Dense, Conv2D, BatchNormalization, Activation, Flatten, MaxPool2D
 from keras.models import Model, load_model
@@ -127,7 +133,7 @@ x = Conv2D(filters=128, kernel_size=3)(x)
 x = Activation("relu")(x)
 x = BatchNormalization()(x)
 x = MaxPool2D()(x)
- 
+
 x = Flatten()(x)
 x = Dense(units=64)(x)
 x = Activation("relu")(x)
@@ -139,16 +145,16 @@ model = Model(inputs=image_input, outputs=x)
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 #model.summary()
 
-model.fit(X_train, y_train, batch_size=64, epochs=6)
+model.fit(X_train, y_train, batch_size=64, epochs=5)
 
 #print(model.metrics_names)
-model.evaluate(X_test, y_test, batch_size=128)
+model.evaluate(X_test, y_test, batch_size=64)
 
 predictions = model.predict(Xt)
 predictions = np.where(predictions.flatten() > 0.5, 1, 0)
 print (predictions,"----")
 
-plot_images(Xt, humanize_labels(predictions))
+plot_images(Xt[:oft], humanize_labels(predictions[:oft]))
 
 #fname = "weights_cnn.hdf5"
 #model.save(fname, overwrite=True)
