@@ -21,14 +21,15 @@ k-Nearest Neighbors (k-NN), l’input è dato dal dataset, ossia gli oggetti ins
 
 Quindi, come in Figura 1, se k=3 allora il pallino verde (oggetto incognito) sarà classificato come simile ai triangoli rossi, perché i primi tre oggetti più vicini a lui sono due triangoli ed un quadrato, quindi è classificabile più come appartenente alla famiglia dei triangoli, se k=5 invece sarà classificato come più vicino ai quadrati blu, perché ci sono più quadrati, che triangoli, nelle sue vicinanze.
 
-![GitHub Logo](/images/immagine1.png)
+![k](https://github.com/nannib/AI/blob/master/recommendation/images/Immagine1.png)
+
 Figura 1- https://commons.wikimedia.org/wiki/File:KnnClassification.svg 
 
 La distanza che potremmo usare è quella Euclidea, ossia dati i punti [1,2,3,4] e [5,6,7,8]
 
 La distanza è:
 
- ![GitHub Logo](/images/Cattura1.JPG)
+ ![distanza](https://github.com/nannib/AI/blob/master/recommendation/images/Cattura1.JPG)
 
 
 Se applichiamo le distanze di [5,6,7,8] anche da altri punti avremo una serie di numeri e potremmo identificare quali sono quelli “meno distanti” dal nostro input per poterlo classificare.
@@ -51,33 +52,33 @@ Dopo la creazione del dataset, scriveremo il programmino in Python, che sfrutter
 
 Il tipo d’apprendimento del machine learning utilizzato sarà “supervisionato” (Figura 2)
 
-![GitHub Logo](/images/immagine2.png)
+![apprendimento](https://github.com/nannib/AI/blob/master/recommendation/images//immagine2.png)
 Figura 2 - definizioni del tipo d'apprendimento nel machine learning
  
 
 Iniziamo col dataset, acquisti.csv:
 
 
-![GitHub Logo](/images/immagine3.png)
+![dataset](https://github.com/nannib/AI/blob/master/recommendation/images//immagine3.png)
 Figura 3- dataset dei clienti C1-C21 e dei loro acquisti
 
 Dove i codici numerici corrispondono ad i seguenti articoli:
 
-# 1   shoes
+ 1   shoes
 
-# 2   gloves
+ 2   gloves
 
-# 3   coffee
+ 3   coffee
 
-# 4   computer
+ 4   computer
 
-# 5   book
+ 5   book
 
-# 6   newspaper
+ 6   newspaper
 
-# 7   T-shirt
+ 7   T-shirt
 
-# 8   sunglasses
+ 8   sunglasses
 
 I clienti sono identificati con i codici da C1 a C21, i loro acquisti passati sono nelle sei colonne successive, codificati numericamente come dalla legenda precedente, nell’ultima colonna c’è l’articolo suggerito dal sistema.
 
@@ -105,7 +106,7 @@ In questo piccolo esempio si ha un’accuratezza dell’addestramento pari al 78
 
 Se l’accuratezza fosse stata del 100% avremmo avuto un modello che si adatta male sugli input nuovi, ossia non è in grado di generalizzare bene e la forza del machine learning è saper generalizzare in modo da risolvere un problema che non si è mai palesato in precedenza, quindi trovare una soluzione nuova, se generalizza poco significa che sulle cose note va benissimo, ma di fronte a qualcosa di diverso lavorerà male.
 
-![GitHub Logo](/images/immagine4.png)
+![overunder](https://github.com/nannib/AI/blob/master/recommendation/images//immagine4.png)
 Figura 4 - tipologie di modello
 
   
@@ -226,7 +227,7 @@ Predicted target name: ['shoes']
  [6, 5, 0, 8, 1, 7]     ['shoes'] 
 
 
-![GitHub Logo](/images/immagine5.png)
+![plot](https://github.com/nannib/AI/blob/master/recommendation/images//immagine5.png)
 
 Dalla lettura del grafico, vediamo che le due distanze minori ricadono nella label “shoes”, quindi siccome due punti sono maggiori di uno e noi abbiamo impostato il k=3 ossia tre punti, l’algoritmo sceglie “shoes”.
 
