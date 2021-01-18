@@ -53,6 +53,7 @@ Dopo la creazione del dataset, scriveremo il programmino in Python, che sfrutter
 Il tipo d’apprendimento del machine learning utilizzato sarà “supervisionato” (Figura 2)
 
 ![apprendimento](https://github.com/nannib/AI/blob/master/recommendation/images/Immagine2.png)
+
 Figura 2 - definizioni del tipo d'apprendimento nel machine learning
  
 
@@ -60,6 +61,7 @@ Iniziamo col dataset, acquisti.csv:
 
 
 ![dataset](https://github.com/nannib/AI/blob/master/recommendation/images/Immagine3.png)
+
 Figura 3- dataset dei clienti C1-C21 e dei loro acquisti
 
 Dove i codici numerici corrispondono ad i seguenti articoli:
@@ -107,6 +109,7 @@ In questo piccolo esempio si ha un’accuratezza dell’addestramento pari al 78
 Se l’accuratezza fosse stata del 100% avremmo avuto un modello che si adatta male sugli input nuovi, ossia non è in grado di generalizzare bene e la forza del machine learning è saper generalizzare in modo da risolvere un problema che non si è mai palesato in precedenza, quindi trovare una soluzione nuova, se generalizza poco significa che sulle cose note va benissimo, ma di fronte a qualcosa di diverso lavorerà male.
 
 ![overunder](https://github.com/nannib/AI/blob/master/recommendation/images/Immagine4.png)
+
 Figura 4 - tipologie di modello
 
   
