@@ -1,5 +1,8 @@
 # AI
+
 some little scripts of machine learning and genetic algorithms <br><br>
+
+## Summary
 
 df.py - let's find a BTS's antenna using machine learning<br>
 neural_deep.py - let's find a BTS's antenna using Multilayer Perceptrons Neural Network (MLP)<br>
