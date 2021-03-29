@@ -80,7 +80,7 @@ fname = "model.hdf5"
 model=load_model(fname)
 
 predictions = model.predict(Xt)
-predictions = np.where(predictions.flatten() > 0.6, 1, 0)
+predictions = np.where(predictions.flatten() > 0.5, 1, 0)
 print (predictions,"----")
 
 plot_images(Xt[:oft], humanize_labels(predictions[:oft]))
