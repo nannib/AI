@@ -149,7 +149,7 @@ model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"]
 model.fit(X_train, y_train, batch_size=64, epochs=6)
 
 #print(model.metrics_names)
-model.evaluate(X_test, y_test, batch_size=64)
+model.evaluate(X_test, y_test, batch_size=128)
 
 predictions = model.predict(Xt)
 predictions = np.where(predictions.flatten() > 0.5, 1, 0)
