@@ -17,8 +17,8 @@ from sklearn.model_selection import train_test_split
 
 
 IMG_DIR = "images/train/"
-IM_WIDTH = 128
-IM_HEIGHT = 128
+IM_WIDTH = 64
+IM_HEIGHT = 64
 LB1="square"
 LB2="circle"
 # fill the directory ./images/train with LB1.jpg and LB2.jpg files
@@ -27,7 +27,7 @@ onlyfiles_test = next(os.walk("images/"))[2] #images/ is your directory for test
 oft = len(onlyfiles_test)
 print (oft)
 
-def read_test_img(directory, resize_to=(128, 128)):
+def read_test_img(directory, resize_to=(IM_WIDTH, IM_HEIGHT)):
     """
     Reads the test image from the given directory
     :param directory directory from which to read the files
@@ -37,7 +37,7 @@ def read_test_img(directory, resize_to=(128, 128)):
     files = glob.glob(directory + "*.jpg")
     images = []
     labels = []
-    for f in tqdm.tqdm_notebook(files):
+    for f in tqdm.notebook.tqdm(files):
         im = Image.open(f)
         im = im.resize(resize_to)
         im = np.array(im) / 255.0
@@ -50,7 +50,7 @@ def read_test_img(directory, resize_to=(128, 128)):
 # put your testing images in ./images directory 
 Xt,yt = read_test_img(directory="images/", resize_to=(IM_WIDTH, IM_HEIGHT))
 
-def read_images(directory, resize_to=(128, 128)):
+def read_images(directory, resize_to=(IM_WIDTH, IM_HEIGHT)):
     """
     Reads images and labels from the given directory
     :param directory directory from which to read the files
@@ -85,7 +85,7 @@ print (of)
 assert len(X) == len(y) == of
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
 # remove X and y since we don't need them anymore
 # otherwise it will just use the memory
 del X
@@ -116,7 +116,7 @@ plot_images(X_train[:of], humanize_labels(y_train[:of]))
 plot_images(Xt[:oft], yt[:oft])
 
 from keras.layers import Input, Dense, Conv2D, BatchNormalization, Activation, Flatten, MaxPool2D
-from keras.models import Model, load_model, Sequential
+from keras.models import Model, Sequential
  
 image_input = Input(shape=(IM_HEIGHT, IM_WIDTH, 3))
 x = Sequential()
@@ -130,7 +130,7 @@ x = Activation("relu")(x)
 x = BatchNormalization()(x)
 x = MaxPool2D()(x)
 
-x = Conv2D(filters=128, kernel_size=3)(x)
+x = Conv2D(filters=64, kernel_size=3)(x)
 x = Activation("relu")(x)
 x = BatchNormalization()(x)
 x = MaxPool2D()(x)
@@ -146,10 +146,10 @@ model = Model(inputs=image_input, outputs=x)
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 #model.summary()
 
-model.fit(X_train, y_train, batch_size=32, epochs=7)
+model.fit(X_train, y_train, batch_size=64, epochs=6)
 
 #print(model.metrics_names)
-model.evaluate(X_test, y_test, batch_size=32)
+model.evaluate(X_test, y_test, batch_size=64)
 
 predictions = model.predict(Xt)
 predictions = np.where(predictions.flatten() > 0.5, 1, 0)
@@ -157,7 +157,5 @@ print (predictions,"----")
 
 plot_images(Xt[:oft], humanize_labels(predictions[:oft]))
 
-#fname = "weights_cnn.hdf5"
-#model.save_weights(fname, overwrite=True)
-
-#model=model.load_weights(fname)
+fname = "model.hdf5"
+model.save(fname, overwrite=True)
