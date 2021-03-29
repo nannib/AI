@@ -85,7 +85,7 @@ print (of)
 assert len(X) == len(y) == of
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 # remove X and y since we don't need them anymore
 # otherwise it will just use the memory
 del X
@@ -146,7 +146,7 @@ model = Model(inputs=image_input, outputs=x)
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 #model.summary()
 
-model.fit(X_train, y_train, batch_size=64, epochs=6)
+model.fit(X_train, y_train, batch_size=64, epochs=3)
 
 #print(model.metrics_names)
 model.evaluate(X_test, y_test, batch_size=128)
