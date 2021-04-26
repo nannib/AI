@@ -12,7 +12,7 @@ import numpy as np
 import glob
 import os
 from PIL import Image
-import tqdm
+from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
 
@@ -37,7 +37,7 @@ def read_test_img(directory, resize_to=(IM_WIDTH, IM_HEIGHT)):
     files = glob.glob(directory + "*.jpg")
     images = []
     labels = []
-    for f in tqdm.tqdm_notebook(files):
+    for f in tqdm(files):
         im = Image.open(f)
         im = im.resize(resize_to)
         im = np.array(im) / 255.0
@@ -60,7 +60,7 @@ def read_images(directory, resize_to=(IM_WIDTH, IM_HEIGHT)):
     files = glob.glob(directory + "*.jpg")
     images = []
     labels = []
-    for f in tqdm.tqdm_notebook(files):
+    for f in tqdm(files):
         im = Image.open(f)
         im = im.resize(resize_to)
         im = np.array(im) / 255.0
