@@ -41,8 +41,6 @@ df = pd.read_csv(url, names=names,header=0)
 df= pd.DataFrame(df)
 df.columns=['age','breed','past_crimes','suspect']
 
-
-
 #counting the feature breed in the dataset
 # and how many suspects for breed type
 df1 = pd.DataFrame(df['breed'])
@@ -57,7 +55,6 @@ print('Records number:',len(df),'Shape:',df.shape)
 print('Suspects number:',df2['breed'].where(df['suspect']=='yes').value_counts())
 print('Terrestrials:',df2['breed'].where(df['breed']=='Terrestrial').value_counts())
 print('Martians:',df2['breed'].where(df['breed']=='Martian').value_counts())
-
 
 
 #array = df.values
@@ -85,7 +82,7 @@ pred_test = model.predict(X_test)
 acctest=accuracy_score(y_test,pred_test)
 acctrain=accuracy_score(y_train,pred_train)
 
-
+#CHECK A TERRESTRIAL
 valori=[18,1,3]
 prediction = model.predict([valori])
 
@@ -106,11 +103,12 @@ print (colored('CHECK A TERRESTRIAL','white','on_blue'))
 print("Predicted target name: {}".format(prediction)," \n",names," \n"," ",valori,"   ",prediction)
 #new_y = pd.get_dummies(df['suspect'], drop_first=True)
 #print (new_y)
-exp.save_to_file('lime.html')
+exp.save_to_file('lime_terrestrial.html')
 print("Red is for Suspect NO (0), Green is for Suspect YES (1)")
 #exp.show_in_notebook(show_all=False)
 
 
+#CHECK A MARTIAN
 valori=[18,0,3]
 prediction = model.predict([valori])
 
@@ -133,6 +131,35 @@ print (colored('CHECK A MARTIAN','white','on_red'))
 print("Predicted target name: {}".format(prediction)," \n",names," \n"," ",valori,"   ",prediction)
 #new_y = pd.get_dummies(df['suspect'], drop_first=True)
 #print (new_y)
-exp.save_to_file('lime.html')
+exp.save_to_file('lime_martian.html')
 print("Red is for Suspect NO (0), Green is for Suspect YES (1)")
-#exp.show_in_notebook(show_all=False)
+
+# prediction without breed
+#CHECK WITH NO BREED
+X = df[['age','past_crimes']]
+y = df['suspect']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+#model = MLPClassifier(hidden_layer_sizes=[100,50,20],verbose=2, max_iter=294, random_state=0)
+model = KNeighborsClassifier(n_neighbors = 3)
+model.fit(X_train, y_train)
+valori=[18,3]
+prediction = model.predict([valori])
+plot_confusion_matrix(model, X_train, y_train) 
+plt.show() 
+print(classification_report(y_train,pred_train))
+#start XAI by LIME
+X_featurenames = X.columns
+predict_fn=lambda x:model.predict_proba(x).astype(float)
+explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames)
+# asking for explanation for LIME model
+exp = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=3)
+exp.as_pyplot_figure()
+
+print(np.asarray(valori))
+print("Accuracy Train:",round(acctrain*100,2),"% Accuracy Test: ",round(acctest*100,2),"%")
+print (colored('CHECK WITH NO BREED','white','on_green'))
+print("Predicted target name: {}".format(prediction)," \n",names," \n"," ",valori,"   ",prediction)
+#new_y = pd.get_dummies(df['suspect'], drop_first=True)
+#print (new_y)
+exp.save_to_file('lime_nobreed.html')
+print("Red is for Suspect NO (0), Green is for Suspect YES (1)")
