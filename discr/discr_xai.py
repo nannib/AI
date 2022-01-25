@@ -72,6 +72,7 @@ df['breed']=le.fit_transform(df['breed'])
 # Split-out validation dataset
 X = df[['age','breed','past_crimes']]
 y = df['suspect']
+label=y.unique()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 #model = MLPClassifier(hidden_layer_sizes=[100,50,20],verbose=2, max_iter=294, random_state=0)
@@ -96,7 +97,7 @@ print(classification_report(y_train,pred_train))
 #start XAI by LIME
 X_featurenames = X.columns
 predict_fn=lambda x:model.predict_proba(x).astype(float)
-explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=['No', 'Yes'])
+explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=label)
 # asking for explanation for LIME model
 exp = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=3)
 exp.as_pyplot_figure()
@@ -123,7 +124,7 @@ print(classification_report(y_train,pred_train))
 #start XAI by LIME
 X_featurenames = X.columns
 predict_fn=lambda x:model.predict_proba(x).astype(float)
-explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=['No', 'Yes'])
+explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=label)
 # asking for explanation for LIME model
 exp = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=3,top_labels=1)
 exp.as_pyplot_figure()
@@ -141,6 +142,7 @@ print("Red is for Suspect NO (0), Green is for Suspect YES (1)")
 #CHECK WITH NO BREED
 X = df[['age','past_crimes']]
 y = df['suspect']
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 #model = MLPClassifier(hidden_layer_sizes=[100,50,20],verbose=2, max_iter=294, random_state=0)
 model = KNeighborsClassifier(n_neighbors = 3)
@@ -154,7 +156,7 @@ print(classification_report(y_train,pred_train))
 #start XAI by LIME
 X_featurenames = X.columns
 predict_fn=lambda x:model.predict_proba(x).astype(float)
-explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=['No', 'Yes'])
+explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=label)
 # asking for explanation for LIME model
 exp = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=3)
 exp.as_pyplot_figure()
