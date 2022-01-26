@@ -13,6 +13,10 @@ import glob
 import os
 from PIL import Image
 from tqdm import tqdm
+import lime
+from lime import lime_image
+from skimage.segmentation import mark_boundaries
+import random
 
 
 IMG_DIR = "images/train/"
@@ -52,7 +56,7 @@ Xt,yt = read_test_img(directory="images/", resize_to=(IM_WIDTH, IM_HEIGHT))
 
 
 def plot_images(images, labels):
-    n_cols = min(5, len(images))
+    n_cols = min(8, len(images))
     n_rows = len(images) // n_cols
     fig = plt.figure(figsize=(8, 8))
  
@@ -84,3 +88,16 @@ predictions = np.where(predictions.flatten() > 0.5, 1, 0)
 print (predictions,"----")
 
 plot_images(Xt[:oft], humanize_labels(predictions[:oft]))
+
+Xt=Xt.astype('double')
+#Xt[1] = np.asarray(Xt[1])
+n=0
+#https://marcotcr.github.io/lime/tutorials/Tutorial%20-%20images.html
+explainer = lime_image.LimeImageExplainer()
+explanation = explainer.explain_instance(Xt[n], model.predict, top_labels=2, hide_color=1, num_samples=1000)
+plt.imshow(Xt[n])
+imm=model.predict(
+              Xt[n].reshape((1,128,128,3))
+         ).argmax(axis=1)[0]
+image, mask = explanation.get_image_and_mask(imm, positive_only=False, num_features=5, hide_rest=False)
+plt.imshow(mark_boundaries(image, mask))
