@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 This machine learning program works on a dataset forged with discrimination parameters, such the breed and the number of crimes committed in the past of the subject.
-If the subject is less the 21 years old or has committed more then 2 crimes in the past and he is Martian (breed=0), the algorithm will classify him as a 'suspect'.
+If the subject is less the 41 years old or has committed more then 2 crimes in the past and he is Martian (breed=0), the algorithm will classify him as a 'suspect'.
 Otherwise, if the subject is Terrestrial (breed=1) and he has committed more then 2 crimes in the past, he will be classified as 'suspect', so Terrestrials are not influenced by the age and they need a crime edge higher then Martians, to be considered 'suspects'.
 The dataset is influenced by the attributes of age and breed
 @author: Nanni Bassetti - nannibassetti.com 
