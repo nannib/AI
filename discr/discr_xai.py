@@ -11,10 +11,10 @@ The dataset is influenced by the attributes of age and breed
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,plot_confusion_matrix,classification_report
 import pandas as pd
-#from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network import MLPClassifier
 import matplotlib.pyplot as plt 
 from sklearn.neighbors import KNeighborsClassifier
-#from sklearn import tree
+from sklearn import tree
 from sklearn import preprocessing
 import lime
 import lime.lime_tabular
@@ -71,15 +71,17 @@ le = preprocessing.LabelEncoder()
 df['breed']=le.fit_transform(df['breed'])
 #df['breed']=(df['breed']-df['breed'].mean())/df['breed'].std()
 #df['breed']=df['breed']/df['breed'].max()
-#print(df['breed'])
+#print(df['breed'],"***********")
 # Split-out validation dataset
 X = df[['age','breed','past_crimes']]
 y = df['suspect']
-label=y.unique()
+#label=y.unique()
+label=['Suspect No','Suspect Yes']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
-#model = MLPClassifier(hidden_layer_sizes=[100,50,20],verbose=2, max_iter=294, random_state=0)
+#model = MLPClassifier(hidden_layer_sizes=[100,50,20],verbose=2, max_iter=10, random_state=0)
 model = KNeighborsClassifier(n_neighbors = 3)
 #model=tree.DecisionTreeClassifier()
+
 model.fit(X_train, y_train)
 
 pred_train = model.predict(X_train)
@@ -88,7 +90,7 @@ acctest=accuracy_score(y_test,pred_test)
 acctrain=accuracy_score(y_train,pred_train)
 
 #CHECK A TERRESTRIAL
-valori=[18,1,6]
+valori=[18,1,3]
 prediction = model.predict([valori])
 
 #tree.plot_tree(model)
@@ -99,7 +101,7 @@ print(classification_report(y_train,pred_train))
 #start XAI by LIME
 X_featurenames = X.columns
 predict_fn=lambda x:model.predict_proba(x).astype(float)
-explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=['No', 'Yes'])
+explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=label)
 # asking for explanation for LIME model
 exp = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=3)
 exp.as_pyplot_figure()
@@ -115,9 +117,9 @@ print("Red is for Suspect NO (0), Green is for Suspect YES (1)")
 
 
 #CHECK A MARTIAN
-valori=[18,0,6]
-prediction = model.predict([valori])
 
+valori=[18,0,3]
+prediction = model.predict([valori])
 
 plot_confusion_matrix(model, X_train, y_train) 
 plt.show() 
@@ -126,9 +128,9 @@ print(classification_report(y_train,pred_train))
 #start XAI by LIME
 X_featurenames = X.columns
 predict_fn=lambda x:model.predict_proba(x).astype(float)
-explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=['No', 'Yes'])
+explainer2=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=label)
 # asking for explanation for LIME model
-exp2 = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=3,top_labels=1)
+exp2 = explainer2.explain_instance(np.asarray(valori), predict_fn, num_features=3)
 exp2.as_pyplot_figure()
 
 print(np.asarray(valori))
@@ -142,6 +144,11 @@ print("Red is for Suspect NO (0), Green is for Suspect YES (1)")
 
 # prediction without breed
 #CHECK WITH NO BREED
+valori=[18,3]
+df['age']=df['age']/df['age'].max()
+#df['past_crimes']=df['past_crimes']/df['past_crimes'].max()
+#df['age']=(df['age']-df['age'].mean())/df['age'].std()
+#df['past_crimes']=(df['past_crimes']-df['past_crimes'].mean())/df['past_crimes'].std()
 X = df[['age','past_crimes']]
 y = df['suspect']
 
@@ -150,7 +157,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 model = KNeighborsClassifier(n_neighbors = 3)
 #model=tree.DecisionTreeClassifier()
 model.fit(X_train, y_train)
-valori=[18,6]
+
 prediction = model.predict([valori])
 plot_confusion_matrix(model, X_train, y_train) 
 plt.show() 
@@ -158,9 +165,9 @@ print(classification_report(y_train,pred_train))
 #start XAI by LIME
 X_featurenames = X.columns
 predict_fn=lambda x:model.predict_proba(x).astype(float)
-explainer=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=['Yes', 'No'])
+explainer3=lime.lime_tabular.LimeTabularExplainer(np.array(X_train),mode='classification',feature_names= X_featurenames,class_names=label)
 # asking for explanation for LIME model
-exp3 = explainer.explain_instance(np.asarray(valori), predict_fn, num_features=2)
+exp3 = explainer3.explain_instance(np.asarray(valori), predict_fn, num_features=2)
 exp3.as_pyplot_figure()
 
 print(np.asarray(valori))
