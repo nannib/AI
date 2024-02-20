@@ -1,0 +1,4 @@
+This machine learning program works on a dataset forged with a discrimination parameter, such the breed and the number of crimes committed in the past of the subject.
+If the subject is Martian has more probabilities to be classified as 'suspect'than a Terrestrial.
+The dataset is influenced by the attributes of breed
+@author: Nanni Bassetti - nannibassetti.com 
